@@ -15,6 +15,7 @@
   * [Grading](#grading)
     - [Grading the custom predictor](#grading-the-custom-predictor)
   * [Turn-in Instructions](#turn-in-instructions)
+  * [Testing](#testing)
 
 ## Introduction
 
@@ -96,7 +97,7 @@ We provide test traces to you to aid in testing your project but we strongly sug
 
 ## Running your predictor
 
-In order to build your predictor you simply need to run `make` in the src/ directory of the project.  You can then run the program on an uncompressed trace as follows:   
+In order to build your predictor you simply need to run `make` in the src/ directory of the project.  You can then run the program on an uncompressed trace as follows:
 
 `./predictor <options> [<trace>]`
 
@@ -119,7 +120,7 @@ being run are as follows:
         tournament:<# ghistory>:<# lhistory>:<# index>
         custom
 ```
-An example of running a gshare predictor with 10 bits of history would be:   
+An example of running a gshare predictor with 10 bits of history would be:
 
 `bunzip2 -kc ../traces/int1_bz2 | ./predictor --gshare:10`
 
@@ -221,3 +222,19 @@ We first ensure that your code is compatible with our autograder. If your code f
 Once you pass the compatibility test, we grade the output produced by your code. You will be able to see your score on some of our test cases, but some will be hidden. Your overall grade will not be visible until after the project's due date.
 
 **Note:** Gradescope expects pass/fail tests but we will be reporting percentages. If you don't score 100%, Gradescope considers it a failed tests. Do not be concerned when you see failed tests (but be concerned if your score is low and re-submit)
+
+## Testing
+
+Set the `PREDICTOR` environment variable to the predictor you want to test. The options are `static`, `gshare`, `tournament`, and `custom`. The `TRACE` environment variable should be set to the trace file you want to use. The trace files are located in the `traces` directory. The following command will test the static predictor with the `int_1` trace:
+
+```
+export PREDICTOR=static # Or gshare:20, tournament:20:20:20, custom
+export TRACE=int_1 # Or fp_1, fp_2, int_2, mm_1, mm_2
+```
+
+Then run the following command to test the predictor:
+
+```
+make test predictor=${PREDICTOR} trace=${TRACE}
+```
+

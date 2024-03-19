@@ -23,21 +23,21 @@ extern const char *email;
 //------------------------------------//
 //      Global Predictor Defines      //
 //------------------------------------//
-#define NOTTAKEN  0
-#define TAKEN     1
+#define NOTTAKEN 0
+#define TAKEN 1
 
 // The Different Predictor Types
-#define STATIC      0
-#define GSHARE      1
-#define TOURNAMENT  2
-#define CUSTOM      3
+#define STATIC 0
+#define GSHARE 1
+#define TOURNAMENT 2
+#define CUSTOM 3
 extern const char *bpName[];
 
 // Definitions for 2-bit counters
-#define SN  0			// predict NT, strong not taken
-#define WN  1			// predict NT, weak not taken
-#define WT  2			// predict T, weak taken
-#define ST  3			// predict T, strong taken
+#define SN 0 // predict NT, strong not taken
+#define WN 1 // predict NT, weak not taken
+#define WT 2 // predict T, weak taken
+#define ST 3 // predict T, strong taken
 
 //------------------------------------//
 //      Predictor Configuration       //
@@ -55,47 +55,6 @@ class BasePredictor {
 public:
     virtual uint8_t make_prediction(uint32_t pc) = 0;
     virtual void train_predictor(uint32_t pc, uint8_t outcome) = 0;
-};
-
-class GsharePredictor : public BasePredictor {
-private:
-    uint32_t GHR;             // Global history record
-    std::vector<uint8_t> BHT; // Branch history table
-    uint32_t gHistoryBits;     // Number of bits used for history
-    uint32_t indexMask;       // Mask to extract relevant bits
-public:
-    GsharePredictor(uint32_t gHistoryBits);
-    uint8_t make_prediction(uint32_t pc) override;
-    void train_predictor(uint32_t pc, uint8_t outcome) override;
-};
-
-class BimodelPredictor : public BasePredictor {
-private:
-    std::vector<uint8_t> BHT; // Branch history table
-    uint32_t indexMask;       // Mask to extract relevant bits
-public:
-    BimodelPredictor(uint32_t lHistoryBits);
-    uint8_t make_prediction(uint32_t pc) override;
-    void train_predictor(uint32_t pc, uint8_t outcome) override;
-};
-
-class TournamentPredictor : public BasePredictor {
-private:
-    GsharePredictor *gshare;
-    BimodelPredictor *bimodal;
-    std::vector<uint8_t> chooser; // Choice table
-    uint32_t indexMask;           // Mask to extract relevant bits
-public:
-    TournamentPredictor(uint32_t gHistoryBits, uint32_t lHistoryBits, uint32_t pcIndexBits);
-    uint8_t make_prediction(uint32_t pc) override;
-    void train_predictor(uint32_t pc, uint8_t outcome) override;
-};
-
-class CustomPredictor : public BasePredictor {
-public:
-    CustomPredictor();
-    uint8_t make_prediction(uint32_t pc) override;
-    void train_predictor(uint32_t pc, uint8_t outcome) override;
 };
 
 //------------------------------------//

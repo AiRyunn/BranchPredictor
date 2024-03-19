@@ -1,8 +1,8 @@
 CC=g++
 OPTS=-g -std=c++11 -Werror
 
-all: main.o predictor.o
-	$(CC) $(OPTS) -lm -o predictor main.o predictor.o
+all: main.o predictor.o gshare.o bimodel.o tournament.o custom.o
+	$(CC) $(OPTS) -lm -o predictor main.o predictor.o gshare.o bimodel.o tournament.o custom.o
 
 main.o: main.cpp predictor.hpp
 	$(CC) $(OPTS) -c main.cpp
@@ -10,17 +10,20 @@ main.o: main.cpp predictor.hpp
 predictor.o: predictor.hpp predictor.cpp
 	$(CC) $(OPTS) -c predictor.cpp
 
-test-static: all
-	bunzip2 -kc ../traces/${trace}.bz2 | ./predictor --static
+gshare.o: gshare.hpp gshare.cpp
+	$(CC) $(OPTS) -c gshare.cpp
 
-test-gshare: all
-	bunzip2 -kc ../traces/${trace}.bz2 | ./predictor --gshare:20
+bimodel.o: bimodel.hpp bimodel.cpp
+	$(CC) $(OPTS) -c bimodel.cpp
 
-test-tournament: all
-	bunzip2 -kc ../traces/${trace}.bz2 | ./predictor --tournament:20:20:20
+tournament.o: tournament.hpp tournament.cpp
+	$(CC) $(OPTS) -c tournament.cpp
 
-test-custom: all
-	bunzip2 -kc ../traces/${trace}.bz2 | ./predictor --custom
+custom.o: custom.hpp custom.cpp
+	$(CC) $(OPTS) -c custom.cpp
+
+test: all
+	bunzip2 -kc ../traces/${trace}.bz2 | ./predictor --${predictor}
 
 clean:
 	rm -f *.o predictor;
