@@ -6,11 +6,12 @@
 //  variables and defines                                 //
 //========================================================//
 
-#ifndef PREDICTOR_H
-#define PREDICTOR_H
+#ifndef PREDICTOR_HPP
+#define PREDICTOR_HPP
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <vector>
 
 //
 // Student Information
@@ -46,6 +47,56 @@ extern int lhistoryBits; // Number of bits used for Local History
 extern int pcIndexBits;  // Number of bits used for PC index
 extern int bpType;       // Branch Prediction Type
 extern int verbose;
+
+//------------------------------------//
+//      Predictor Data Structures     //
+//------------------------------------//
+class BasePredictor {
+public:
+    virtual uint8_t make_prediction(uint32_t pc) = 0;
+    virtual void train_predictor(uint32_t pc, uint8_t outcome) = 0;
+};
+
+class GsharePredictor : public BasePredictor {
+private:
+    uint32_t GHR;             // Global history record
+    std::vector<uint8_t> BHT; // Branch history table
+    uint32_t gHistoryBits;     // Number of bits used for history
+    uint32_t indexMask;       // Mask to extract relevant bits
+public:
+    GsharePredictor(uint32_t gHistoryBits);
+    uint8_t make_prediction(uint32_t pc) override;
+    void train_predictor(uint32_t pc, uint8_t outcome) override;
+};
+
+class BimodelPredictor : public BasePredictor {
+private:
+    std::vector<uint8_t> BHT; // Branch history table
+    uint32_t indexMask;       // Mask to extract relevant bits
+public:
+    BimodelPredictor(uint32_t lHistoryBits);
+    uint8_t make_prediction(uint32_t pc) override;
+    void train_predictor(uint32_t pc, uint8_t outcome) override;
+};
+
+class TournamentPredictor : public BasePredictor {
+private:
+    GsharePredictor *gshare;
+    BimodelPredictor *bimodal;
+    std::vector<uint8_t> chooser; // Choice table
+    uint32_t indexMask;           // Mask to extract relevant bits
+public:
+    TournamentPredictor(uint32_t gHistoryBits, uint32_t lHistoryBits, uint32_t pcIndexBits);
+    uint8_t make_prediction(uint32_t pc) override;
+    void train_predictor(uint32_t pc, uint8_t outcome) override;
+};
+
+class CustomPredictor : public BasePredictor {
+public:
+    CustomPredictor();
+    uint8_t make_prediction(uint32_t pc) override;
+    void train_predictor(uint32_t pc, uint8_t outcome) override;
+};
 
 //------------------------------------//
 //    Predictor Function Prototypes   //
