@@ -3,6 +3,8 @@
 
 #include "predictor.hpp"
 
+// Tournament predictor
+// Memory usage: 2^gHistoryBits + 2^lHistoryBits + 2^pcIndexBits bytes
 class TournamentPredictor : public BasePredictor {
 private:
     BasePredictor *gPredictor;

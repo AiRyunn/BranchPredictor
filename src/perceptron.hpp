@@ -4,6 +4,7 @@
 #include "predictor.hpp"
 
 // Perceptron predictor: https://www.cs.utexas.edu/~lin/papers/hpca01.pdf
+// Memory usage: 2^gHistoryBits * (2^pcIndexBits + 1) bytes
 class PerceptronPredictor : public BasePredictor {
 private:
     std::vector<std::vector<int> > weights; // Perceptron weights

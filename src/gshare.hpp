@@ -3,6 +3,8 @@
 
 #include "predictor.hpp"
 
+// Gshare predictor
+// Memory usage: 2^gHistoryBits bytes
 class GsharePredictor : public BasePredictor {
 private:
     uint32_t GHR;             // Global history record
