@@ -1,8 +1,8 @@
 CC=g++
 OPTS=-g -std=c++11 -Werror
 
-all: main.o predictor.o gshare.o bimodel.o tournament.o custom.o
-	$(CC) $(OPTS) -lm -o predictor main.o predictor.o gshare.o bimodel.o tournament.o custom.o
+all: main.o predictor.o gshare.o bimodel.o tournament.o perceptron.o
+	$(CC) $(OPTS) -lm -o predictor main.o predictor.o gshare.o bimodel.o tournament.o perceptron.o
 
 main.o: main.cpp predictor.hpp
 	$(CC) $(OPTS) -c main.cpp
@@ -19,8 +19,8 @@ bimodel.o: bimodel.hpp bimodel.cpp
 tournament.o: tournament.hpp tournament.cpp
 	$(CC) $(OPTS) -c tournament.cpp
 
-custom.o: custom.hpp custom.cpp
-	$(CC) $(OPTS) -c custom.cpp
+perceptron.o: perceptron.hpp perceptron.cpp
+	$(CC) $(OPTS) -c perceptron.cpp
 
 test: all
 	bunzip2 -kc ../traces/${trace}.bz2 | ./predictor --${predictor}

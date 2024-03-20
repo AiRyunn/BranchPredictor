@@ -237,4 +237,3 @@ Then run the following command to test the predictor:
 ```
 make test predictor=${PREDICTOR} trace=${TRACE}
 ```
-

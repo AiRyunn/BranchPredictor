@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <cassert>
 
 FILE *stream;
 char *buf = NULL;
@@ -44,8 +43,9 @@ int handle_option(char *arg) {
     } else if (!strncmp(arg, "--tournament:", 13)) {
         bpType = TOURNAMENT;
         sscanf(arg + 13, "%d:%d:%d", &ghistoryBits, &lhistoryBits, &pcIndexBits);
-    } else if (!strcmp(arg, "--custom")) {
+    } else if (!strncmp(arg, "--custom:", 9)) {
         bpType = CUSTOM;
+        sscanf(arg + 9, "%d:%d:%d", &pcIndexBits, &ghistoryBits, &threshold);
     } else if (!strcmp(arg, "--verbose")) {
         verbose = 1;
     } else {

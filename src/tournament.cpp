@@ -1,6 +1,6 @@
 #include "tournament.hpp"
-#include "gshare.hpp"
 #include "bimodel.hpp"
+#include "gshare.hpp"
 
 TournamentPredictor::TournamentPredictor(uint32_t gHistoryBits, uint32_t lHistoryBits, uint32_t pcIndexBits) {
     gPredictor = new GsharePredictor(gHistoryBits);

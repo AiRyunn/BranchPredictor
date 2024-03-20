@@ -7,8 +7,8 @@
 //========================================================//
 #include "predictor.hpp"
 #include "gshare.hpp"
+#include "perceptron.hpp"
 #include "tournament.hpp"
-#include "custom.hpp"
 #include <cassert>
 #include <stdio.h>
 
@@ -29,6 +29,7 @@ const char *bpName[4] = {"Static", "Gshare", "Tournament", "Custom"};
 int ghistoryBits; // Number of bits used for Global History
 int lhistoryBits; // Number of bits used for Local History
 int pcIndexBits;  // Number of bits used for PC index
+int threshold;    // Threshold for perceptron predictor
 int bpType;       // Branch Prediction Type
 int verbose;
 
@@ -61,7 +62,7 @@ void init_predictor() {
         predictor = new TournamentPredictor(ghistoryBits, lhistoryBits, pcIndexBits);
         break;
     case CUSTOM:
-        predictor = new CustomPredictor();
+        predictor = new PerceptronPredictor(pcIndexBits, ghistoryBits, threshold);
         break;
     default:
         break;
