@@ -1,7 +1,7 @@
 #include "gshare.hpp"
 
 GsharePredictor::GsharePredictor(uint32_t gHistoryBits) : GHR(0) {
-    BHT.resize(1 << gHistoryBits, WT); // Initialize with weakly taken
+    BHT.resize(1 << gHistoryBits, WN); // Initialize with weakly not taken
     indexMask = (1 << gHistoryBits) - 1;
 }
 
@@ -17,5 +17,5 @@ void GsharePredictor::train_predictor(uint32_t pc, uint8_t outcome) {
     } else if (outcome == NOTTAKEN && BHT[index] > SN) {
         BHT[index]--;
     }
-    GHR = (GHR << 1) | outcome;
+    GHR = ((GHR << 1) | outcome) & indexMask;
 }

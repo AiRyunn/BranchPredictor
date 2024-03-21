@@ -1,9 +1,8 @@
 #include "perceptron.hpp"
 #include <algorithm>
-#include <cstdio>
 
 PerceptronPredictor::PerceptronPredictor(uint32_t pcIndexBits, uint32_t gHistoryBits, uint32_t threshold)
-    : threshold(threshold), gHistoryBits(gHistoryBits) {
+    : threshold(threshold) {
     weights.resize(1 << pcIndexBits, std::vector<int>(gHistoryBits + 1, 0)); // +1 for bias weight
     GHR.resize(gHistoryBits, WT);                                            // Initialize with weakly taken
     indexMask = (1 << pcIndexBits) - 1;

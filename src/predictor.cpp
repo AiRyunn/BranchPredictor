@@ -9,8 +9,6 @@
 #include "gshare.hpp"
 #include "perceptron.hpp"
 #include "tournament.hpp"
-#include <cassert>
-#include <stdio.h>
 
 //
 // TODO:Student Information
