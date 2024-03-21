@@ -2,16 +2,16 @@
 #define PERCEPTRON_HPP
 
 #include "predictor.hpp"
+#include <bitset>
 
 // Perceptron predictor: https://www.cs.utexas.edu/~lin/papers/hpca01.pdf
-// Memory usage: 2*2^pcIndexBits * (gHistoryBits + 1) bytes
+// Memory usage: 2^pcIndexBits * (gHistoryBits + 1) bytes
 class PerceptronPredictor : public BasePredictor {
 private:
-    std::vector<std::vector<int16_t> > weights; // Perceptron weights
-    uint64_t GHR;                               // Global History Register, as a 64-bit integer
-    const uint32_t threshold;                   // Threshold for updating weights
-    const uint32_t indexMask;                   // Mask of the index
-
+    std::vector<std::vector<int8_t> > weights; // Perceptron weights
+    std::bitset<256> GHR;                      // Global History Register
+    const uint32_t threshold;                  // Threshold for updating weights
+    const uint32_t indexMask;                  // Mask of the index
     int calculate_sum(uint32_t index) const;
 
 public:

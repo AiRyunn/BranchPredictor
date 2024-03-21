@@ -1,5 +1,22 @@
 #include "tournament.hpp"
 
+GlobalPredictor::GlobalPredictor(uint32_t gHistoryBits) : GHR(0), gHistoryMask((1 << gHistoryBits) - 1) {
+    GHT.resize(1 << gHistoryBits, WN); // Initialize with weakly not taken
+}
+
+uint8_t GlobalPredictor::make_prediction(uint32_t pc) const {
+    return GHT[GHR] >= WT ? TAKEN : NOTTAKEN;
+}
+
+void GlobalPredictor::train_predictor(uint32_t pc, uint8_t outcome) {
+    if (outcome == TAKEN && GHT[GHR] < ST) {
+        GHT[GHR]++;
+    } else if (outcome == NOTTAKEN && GHT[GHR] > SN) {
+        GHT[GHR]--;
+    }
+    GHR = (GHR << 1 | outcome) & gHistoryMask;
+}
+
 LocalPredictor::LocalPredictor(uint32_t lHistoryBits, uint32_t pcIndexBits)
     : indexMask((1 << pcIndexBits) - 1), lHistoryMask((1 << lHistoryBits) - 1) {
     LPT.resize(1 << pcIndexBits, 0);   // Initialize with 0
@@ -23,27 +40,10 @@ void LocalPredictor::train_predictor(uint32_t pc, uint8_t outcome) {
     localPrediction = (localPrediction << 1 | outcome) & lHistoryMask;
 }
 
-GlobalPredictor::GlobalPredictor(uint32_t gHistoryBits) : GHR(0), gHistoryMask((1 << gHistoryBits) - 1) {
-    GHT.resize(1 << gHistoryBits, WN); // Initialize with weakly not taken
-}
-
-uint8_t GlobalPredictor::make_prediction(uint32_t pc) const {
-    return GHT[GHR] >= WT ? TAKEN : NOTTAKEN;
-}
-
-void GlobalPredictor::train_predictor(uint32_t pc, uint8_t outcome) {
-    if (outcome == TAKEN && GHT[GHR] < ST) {
-        GHT[GHR]++;
-    } else if (outcome == NOTTAKEN && GHT[GHR] > SN) {
-        GHT[GHR]--;
-    }
-    GHR = (GHR << 1 | outcome) & gHistoryMask;
-}
-
 TournamentPredictor::TournamentPredictor(uint32_t gHistoryBits, uint32_t lHistoryBits, uint32_t pcIndexBits)
     : GHR(0), indexMask((1 << pcIndexBits) - 1) {
-    lPredictor = new LocalPredictor(lHistoryBits, pcIndexBits);
     gPredictor = new GlobalPredictor(gHistoryBits);
+    lPredictor = new LocalPredictor(lHistoryBits, pcIndexBits);
     chooser.resize(1 << pcIndexBits, WT); // Initialize with weakly taken to prefer global predictor
 }
 

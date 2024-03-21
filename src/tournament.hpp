@@ -34,8 +34,8 @@ public:
 // Memory usage: 5*2^pcIndexBits + 2^lHistoryBits + 2^gHistoryMask bytes
 class TournamentPredictor : public BasePredictor {
 private:
-    LocalPredictor *lPredictor;
     GlobalPredictor *gPredictor;
+    LocalPredictor *lPredictor;
     uint32_t GHR;                 // Global history register
     std::vector<uint8_t> chooser; // Choice table
     const uint32_t indexMask;     // Mask of the index
