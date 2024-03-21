@@ -1,6 +1,6 @@
 #include "gshare.hpp"
 
-GsharePredictor::GsharePredictor(uint32_t gHistoryBits) : GHR(0), indexMask((1 << gHistoryBits) - 1){
+GsharePredictor::GsharePredictor(uint32_t gHistoryBits) : GHR(0), indexMask((1 << gHistoryBits) - 1) {
     BHT.resize(1 << gHistoryBits, WN); // Initialize with weakly not taken
 }
 

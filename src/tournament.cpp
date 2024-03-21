@@ -1,7 +1,7 @@
 #include "tournament.hpp"
 
-LocalPredictor::LocalPredictor(uint32_t lHistoryBits, uint32_t pcIndexBits) : indexMask((1 << pcIndexBits) - 1),
-    lHistoryMask((1 << lHistoryBits) - 1) {
+LocalPredictor::LocalPredictor(uint32_t lHistoryBits, uint32_t pcIndexBits)
+    : indexMask((1 << pcIndexBits) - 1), lHistoryMask((1 << lHistoryBits) - 1) {
     LPT.resize(1 << pcIndexBits, 0);   // Initialize with 0
     BHT.resize(1 << lHistoryBits, WN); // Initialize with weakly not taken
 }

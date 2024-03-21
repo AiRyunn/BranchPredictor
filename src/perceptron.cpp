@@ -3,7 +3,7 @@
 #include <climits>
 
 PerceptronPredictor::PerceptronPredictor(uint32_t pcIndexBits, uint32_t gHistoryBits, uint32_t threshold)
-    : GHR(0), threshold(threshold), indexMask((1 << pcIndexBits) - 1), gHistoryMask((1 << gHistoryBits) - 1) {
+    : GHR(0), threshold(threshold), indexMask((1 << pcIndexBits) - 1) {
     weights.resize(1 << pcIndexBits, std::vector<int16_t>(gHistoryBits + 1, 0)); // +1 for bias weight
 }
 
