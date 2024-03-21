@@ -1,5 +1,5 @@
 CC=g++
-OPTS=-g -std=c++11 -Werror
+OPTS=-g -std=c++11 -Og -Werror
 
 all: main.o predictor.o gshare.o tournament.o perceptron.o
 	$(CC) $(OPTS) -lm -o predictor main.o predictor.o gshare.o tournament.o perceptron.o
